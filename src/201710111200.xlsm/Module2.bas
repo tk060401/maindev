@@ -10,62 +10,62 @@ Sub csvPortingExcelFile()
     Dim j As Integer
     Dim overWorkCheck As Boolean
         
-    'èª­ã¿è¾¼ã¿
-    Set csvFile = fso.OpenTextFile("C:\Users\t.kawano\Desktop\æ®‹æ¥­ä»£ä½œæˆãƒ„ãƒ¼ãƒ«\daily_2017-09-01_2017-10-01.csv", 1)
-    '---------------â†‘èª­ã¿è¾¼ã¿å¯¾è±¡ãƒ•ã‚¡ã‚¤ãƒ«ã¹ãŸæ›¸ããªã®ã§ãƒ†ã‚­ã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼Ÿã‹ã‚‰å ´æ‰€ã‚’èª­ã‚€ã‚ˆã†ã«ç›´ã™_1011_1100-------------
+    '“Ç‚İ‚İ
+    Set csvFile = fso.OpenTextFile("C:\Users\t.kawano\Desktop\c‹Æ‘ãì¬ƒc[ƒ‹\daily_2017-09-01_2017-10-01.csv", 1)
+    '---------------ª“Ç‚İ‚İ‘ÎÛƒtƒ@ƒCƒ‹‚×‚½‘‚«‚È‚Ì‚ÅƒeƒLƒXƒgƒ{ƒbƒNƒXH‚©‚çêŠ‚ğ“Ç‚Ş‚æ‚¤‚É’¼‚·_1011_1100-------------
     
-    'èª­ã‚“ã csvãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¾Œã®è¡Œã¾ã§èª­ã¿è¾¼ã‚€
+    '“Ç‚ñ‚¾csvƒtƒ@ƒCƒ‹‚ÌÅŒã‚Ìs‚Ü‚Å“Ç‚İ‚Ş
     i = 1
     Do While csvFile.AtEndOfStream = False
         csvData = csvFile.ReadLine
         splitcsvData = Split(csvData, ",")
         j = UBound(splitcsvData) + 1
         
-        'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œã‚ã†
+        'ƒtƒ@ƒCƒ‹‚ğì‚ë‚¤
         Sheet2.Range(Sheet2.Cells(i, 1), Sheet2.Cells(i, j)).Value = splitcsvData
         i = i + 1
     Loop
 
-    'æ®‹æ¥­æ™‚é–“è‰²ä»˜ã‘ãƒ¡ã‚½ãƒƒãƒ‰ã®å‘¼ã³å‡ºã—
+    'c‹ÆŠÔF•t‚¯ƒƒ\ƒbƒh‚ÌŒÄ‚Ño‚µ
     Call overTimeColoring
     
-    'ã‚¨ã‚¯ã‚»ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‹ãã ã™
+    'ƒGƒNƒZƒ‹ƒtƒ@ƒCƒ‹‚ğ‚©‚«‚¾‚·
 
     csvFile.Close
     Set csvFile = Nothing
     Set fso = Nothing
     
-    'æœ€å¾Œä¸€ç•ªå·¦ä¸Šã«é¸æŠã‚»ãƒ«ã‚’æˆ»ã™
+    'ÅŒãˆê”Ô¶ã‚É‘I‘ğƒZƒ‹‚ğ–ß‚·
     Range("A1").Select
 
 End Sub
 
-'æ®‹æ¥­æ™‚é–“ã®è¦æ¨¡ã«å¿œã˜ã¦èƒŒæ™¯è‰²ã‚’ã¤ã‘ã‚‹
+'c‹ÆŠÔ‚Ì‹K–Í‚É‰‚¶‚Ä”wŒiF‚ğ‚Â‚¯‚é
 Private Sub overTimeColoring()
-    Dim MaxCol As Integer 'æœ€å¤§è¡Œ
-    Dim MaxRow As Integer 'æœ€å¤§åˆ—
-    Dim overTimeRow As Integer 'æ®‹æ¥­æ™‚é–“ã®å…¥ã£ãŸåˆ—
-    Dim overTime As Date 'æ®‹æ¥­æ™‚é–“
-    'Dim paintTargetCell As Object 'è‰²ã‚’ã¤ã‘ã‚‹ã‚»ãƒ«
+    Dim MaxCol As Integer 'Å‘ås
+    Dim MaxRow As Integer 'Å‘å—ñ
+    Dim overTimeRow As Integer 'c‹ÆŠÔ‚Ì“ü‚Á‚½—ñ
+    Dim overTime As Date 'c‹ÆŠÔ
+    'Dim paintTargetCell As Object 'F‚ğ‚Â‚¯‚éƒZƒ‹
     
     Dim k As Integer
     Dim l As Integer
 
-    'æ®‹æ¥­æ™‚é–“ã®å…¥ã£ãŸè¡Œã‚’æ¢ã™
+    'c‹ÆŠÔ‚Ì“ü‚Á‚½s‚ğ’T‚·
     MaxCol = Cells(1, Columns.Count).End(xlToLeft).Column
     For k = 1 To MaxCol
-        If Cells(1, k).Value = "æ®‹æ¥­æ™‚é–“" Then
+        If Cells(1, k).Value = "c‹ÆŠÔ" Then
             overTimeRow = k
         End If
     Next k
 
     MaxRow = Cells(Rows.Count, 1).End(xlUp).Row
-    '1è¡Œç›®ã¯è¦‹å‡ºã—,æ®‹æ¥­æ™‚é–“ãƒ‡ãƒ¼ã‚¿ã¯2è¡Œç›®ã‹ã‚‰æœ€å¾Œå°¾ã¾ã§
+    '1s–Ú‚ÍŒ©o‚µ,c‹ÆŠÔƒf[ƒ^‚Í2s–Ú‚©‚çÅŒã”ö‚Ü‚Å
     For l = 2 To MaxRow
         overTime = CDate(Cells(l, overTimeRow).Value)
         'paintTargetCell = Cells(l, overTimeRow)
         
-       'æ®‹æ¥­æ™‚é–“ã®æ¡ä»¶ã«æ²¿ã£ã¦è‰²ã‚’ã¤ã‘ã‚‹(è‰²ã¨æ™‚é–“ã‚’å®šæ•°åŒ–ã™ã‚‹ï¼Ÿ)
+       'c‹ÆŠÔ‚ÌğŒ‚É‰ˆ‚Á‚ÄF‚ğ‚Â‚¯‚é(F‚ÆŠÔ‚ğ’è”‰»‚·‚éH)
         If overTime >= "3:00:00" Then
             Cells(l, overTimeRow).Interior.Color = RGB(226, 43, 48)
         ElseIf overTime >= "2:00:00" Then
@@ -73,7 +73,7 @@ Private Sub overTimeColoring()
         ElseIf overTime >= "1:00:00" Then
             Cells(l, overTimeRow).Interior.Color = RGB(233, 115, 155)
         Else
-            '1æ™‚é–“æœªæº€ãªã‚‰è‰²ä»˜ã‘ãªã—
+            '1ŠÔ–¢–‚È‚çF•t‚¯‚È‚µ
         End If
     Next l
 End Sub
