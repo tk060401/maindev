@@ -18,6 +18,8 @@ Sub csvPortingExcelFile()
     i = 1
     Do While csvFile.AtEndOfStream = False
         csvData = csvFile.ReadLine
+        
+        csvData = Replace(csvData, """", "")
         splitcsvData = Split(csvData, ",")
         j = UBound(splitcsvData) + 1
         
@@ -77,4 +79,3 @@ Private Sub overTimeColoring()
         End If
     Next l
 End Sub
-
