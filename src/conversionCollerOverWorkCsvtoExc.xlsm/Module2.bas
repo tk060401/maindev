@@ -74,7 +74,7 @@ Private Sub overTimeColoring()
 End Sub
 
 '---------èIóπÉ{É^Éì--------
-Private Sub exitApp_btn()
+Public Sub exitApp_btn()
     Application.Quit
  End Sub
  
