@@ -110,35 +110,35 @@ Private Sub editSheet(ByVal g_masterSheet As String)
                 ymCord = Sheets(g_masterSheet).Cells(l, ymRow).Value
                 '出力シートのレコード位置
                 Set masterRecord = Sheets(g_masterSheet).Range(Sheets(g_masterSheet).Cells(l, 1), Sheets(g_masterSheet).Cells(l, MaxCol))
-       
-                If inArray(employerCord, employeeCordList(managerCount)) Then
-                        '管理者シートのレコード
-                        Set managerRecord = Sheets(managerNameList(managerCount)).Range(Sheets(managerNameList(managerCount)).Cells(recordCount, 1), Sheets(managerNameList(managerCount)).Cells(recordCount, MaxCol))
-                        If isYm And isEmployerCord Then
-                            If inputYm = ymCord And inputEmployerCord = employerCord Then
-                                managerRecord.Value = masterRecord.Value
-                                recordCount = recordCount + 1
-                            End If
-                        ElseIf isYm Then
-                            If inputYm = ymCord Then
-                                managerRecord.Value = masterRecord.Value
-                                recordCount = recordCount + 1
-                            End If
-                        ElseIf isEmployerCord Then
-                            If inputEmployerCord = employerCord Then
-                                managerRecord.Value = masterRecord.Value
-                                recordCount = recordCount + 1
-                            End If
-                        Else
-                            managerRecord.Value = masterRecord.Value
-                            recordCount = recordCount + 1
-                        End If
+                
+                If inArray(employerCord, employeeCordList(managerCount)) = False Then
+                    GoTo Continue ' 検索外の社員コードならコピー(以下処理)しない
                 End If
+                '管理者シートのレコード
+                Set managerRecord = Sheets(managerNameList(managerCount)).Range(Sheets(managerNameList(managerCount)).Cells(recordCount, 1), Sheets(managerNameList(managerCount)).Cells(recordCount, MaxCol))
+                
+                Dim IsInportRecord As Boolean
+                If IsInportRecord = isInportRecordSheet(isYm, inputEmployerCord, inputYm, inputEmployerCord, ymCord, employerCord) Then
+                    managerRecord.Value = masterRecord.Value
+                    recordCount = recordCount + 1
+                End If
+Continue:
             Next l
             'マスターシートと同じように色付け
             Call touchCollerOverTimeCell(overTimeRow, Sheets(managerNameList(managerCount)).Cells(Rows.count, 1).End(xlUp).Row, managerNameList(managerCount))
     Next managerCount
 End Sub
+Private Function isInportRecordSheet(ByVal isYm As Boolean, ByVal isEmployerCord As Boolean, ByVal inputYm As Long, ByVal inputEmployerCord As Long, ByVal ymCord As Long, ByVal employerCord As Long)
+    Dim IsCopyRecord As Boolean
+    IsCopyRecord = False
+    If isYm And isEmployerCord And inputYm = ymCord And inputEmployerCord = employerCord Then
+        IsCopyRecord = True
+    ElseIf isYm And inputYm = ymCord Then
+        IsCopyRecord = True
+    ElseIf isEmployerCord And inputEmployerCord = employerCord Then
+        IsCopyRecord = True
+    End If
+End Function
 '配列内検索
 Public Function inArray(ByVal needle As Variant, ByVal haystack As Variant) As Boolean
     Dim theValue As Variant
@@ -173,7 +173,17 @@ End Sub
 '管理者シートの作成(1行目カラム一覧まで)
 Private Sub createManagerSheet(ByVal MaxCol As Integer, ByVal managerNameList As Variant, ByVal g_masterSheet As String)
     Dim mName As Variant
+    Dim sCount As Integer
+    sCount = Sheets.count
+    Dim i As Integer
     For Each mName In managerNameList
+        '同名シートの存在チェック
+        For i = 1 To sCount
+            If mName = Worksheets(i).Name Then
+                MsgBox "古い管理者シートを捨てるか名前を変えてください"
+                End
+            End If
+        Next i
         With Worksheets.Add(after:=Worksheets(Worksheets.count))
             .Name = mName
         End With
